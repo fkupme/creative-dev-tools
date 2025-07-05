@@ -1,4 +1,28 @@
 {
-  // https://nuxt.com/docs/guide/concepts/typescript
-  "extends": "./.nuxt/tsconfig.json"
+	// https://nuxt.com/docs/guide/concepts/typescript
+	"extends": "./.nuxt/tsconfig.json",
+	"compilerOptions": {
+		"target": "ES2020",
+		"module": "ESNext",
+		"moduleResolution": "node",
+		"strict": true,
+		"jsx": "preserve",
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"forceConsistentCasingInFileNames": true,
+		"useDefineForClassFields": true,
+		"skipLibCheck": true,
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"declaration": false,
+		"noEmit": true,
+		"types": ["node"],
+		"lib": ["DOM", "DOM.Iterable", "ES2020"],
+		"paths": {
+			"@/*": ["./*"],
+			"~/*": ["./*"]
+		}
+	},
+	"include": ["**/*.ts", "**/*.tsx", "**/*.vue", ".nuxt/**/*"],
+	"exclude": ["node_modules", "dist", ".nuxt"]
 }

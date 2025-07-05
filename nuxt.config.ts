@@ -1,18 +1,19 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-	compatibilityDate: '2025-05-15',
-	devtools: { enabled: true },
 	modules: [
-		'@nuxt/fonts',
-		'@nuxt/icon',
-		'@nuxt/image',
 		'@nuxtjs/tailwindcss',
 		'@nuxtjs/color-mode',
+		'@nuxt/icon',
+		'@nuxt/image',
+		'@nuxt/fonts',
 		'@vueuse/nuxt',
+		'@pinia/nuxt',
+		'@nuxt/devtools',
 	],
+	devtools: { enabled: true },
 	css: ['~/assets/css/main.css'],
 	colorMode: {
-		preference: 'system',
+		preference: 'dark',
 		fallback: 'light',
 		hid: 'nuxt-color-mode-script',
 		globalName: '__NUXT_COLOR_MODE__',
@@ -21,20 +22,54 @@ export default defineNuxtConfig({
 		classSuffix: '',
 		storageKey: 'nuxt-color-mode',
 	},
+	tailwindcss: {
+		cssPath: '~/assets/css/main.css',
+		configPath: 'tailwind.config.js',
+		exposeConfig: false,
+		injectPosition: 0,
+		viewer: true,
+	},
+	fonts: {
+		families: [
+			{ name: 'Inter', provider: 'google' },
+			{ name: 'JetBrains Mono', provider: 'google' },
+		],
+	},
 	app: {
 		head: {
-			title: 'Creative Dev Tools - CSS Generators & Developer Utilities',
+			title: 'Creative Dev Tools',
 			meta: [
-				{ charset: 'utf-8' },
-				{ name: 'viewport', content: 'width=device-width, initial-scale=1' },
 				{
-					hid: 'description',
 					name: 'description',
 					content:
-						'Professional CSS generators, color palettes, and developer tools for creating stunning web designs.',
+						'Комплексный набор инструментов для веб-разработчиков и дизайнеров',
 				},
+				{
+					name: 'keywords',
+					content:
+						'css, generator, shadow, gradient, color, palette, web development, tools',
+				},
+				{ property: 'og:title', content: 'Creative Dev Tools' },
+				{
+					property: 'og:description',
+					content: 'Современные инструменты для веб-разработки',
+				},
+				{ property: 'og:type', content: 'website' },
+				{ name: 'twitter:card', content: 'summary_large_image' },
 			],
 			link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+		},
+	},
+	runtimeConfig: {
+		public: {
+			appName: 'Creative Dev Tools',
+			appVersion: '1.0.0',
+		},
+	},
+	ssr: false,
+	nitro: {
+		prerender: {
+			routes: ['/'],
 		},
 	},
 });
