@@ -43,28 +43,7 @@
 				/>
 			</div>
 
-			<!-- Common Colors -->
-			<div class="space-y-2">
-				<h4
-					class="text-sm font-medium text-secondary-700 dark:text-secondary-300"
-				>
-					Популярные цвета
-				</h4>
-				<div class="grid grid-cols-6 gap-2">
-					<button
-						v-for="color in commonColors"
-						:key="color.value"
-						class="p-2 text-xs rounded hover:bg-secondary-100 dark:hover:bg-secondary-700 transition-colors"
-						@click="selectColor(color.value)"
-					>
-						<div
-							class="w-4 h-4 rounded mb-1 mx-auto"
-							:style="{ backgroundColor: color.value }"
-						/>
-						{{ color.name }}
-					</button>
-				</div>
-			</div>
+
 		</div>
 
 		<!-- RGB/HSL Values -->

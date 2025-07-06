@@ -1,26 +1,28 @@
 <template>
 	<div class="flex items-center justify-between">
 		<div v-if="label || description" class="flex-1">
-			<label v-if="label" :for="toggleId" class="label">
+			<label
+				v-if="label"
+				:for="toggleId"
+				class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+			>
 				{{ label }}
 			</label>
-			<p v-if="description" class="text-small text-secondary-500">
+			<p v-if="description" class="text-xs text-gray-500 dark:text-gray-400">
 				{{ description }}
 			</p>
 		</div>
 
-		<Switch
+		<button
 			:id="toggleId"
-			:checked="modelValue"
+			type="button"
 			:disabled="disabled"
 			:class="[
-				'relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2',
-				modelValue
-					? 'bg-primary-500'
-					: 'bg-secondary-200 dark:bg-secondary-700',
+				'relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
+				modelValue ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700',
 				disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer',
 			]"
-			@update:checked="$emit('update:modelValue', $event)"
+			@click="toggle"
 		>
 			<span
 				:class="[
@@ -28,13 +30,11 @@
 					modelValue ? 'translate-x-6' : 'translate-x-1',
 				]"
 			/>
-		</Switch>
+		</button>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { Switch } from "@headlessui/vue";
-
 interface Props {
 	modelValue: boolean;
 	label?: string;
@@ -49,4 +49,10 @@ const emit = defineEmits<{
 }>();
 
 const toggleId = `toggle-${Math.random().toString(36).substr(2, 9)}`;
+
+const toggle = () => {
+	if (!props.disabled) {
+		emit("update:modelValue", !props.modelValue);
+	}
+};
 </script> 

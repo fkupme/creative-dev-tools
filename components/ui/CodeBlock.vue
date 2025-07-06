@@ -1,59 +1,71 @@
 <template>
 	<div class="relative">
-		<div class="flex items-center justify-between mb-2">
+		<div class="flex items-center justify-between mb-2" v-if="title">
 			<h3
-				v-if="title"
 				class="text-sm font-medium text-secondary-700 dark:text-secondary-300"
 			>
 				{{ title }}
 			</h3>
-			<div class="flex items-center space-x-2">
-				<button
-					v-if="copyable"
-					@click="copyCode"
-					class="p-1 rounded hover:bg-secondary-100 dark:hover:bg-secondary-700 transition-colors"
-					:title="copied ? 'Скопировано!' : 'Копировать код'"
-				>
-					<Icon
-						:name="copied ? 'heroicons:check' : 'heroicons:clipboard'"
-						class="w-4 h-4 text-secondary-500 hover:text-secondary-700 dark:hover:text-secondary-300"
-					/>
-				</button>
-				<button
-					v-if="downloadable"
-					@click="downloadCode"
-					class="p-1 rounded hover:bg-secondary-100 dark:hover:bg-secondary-700 transition-colors"
-					title="Скачать файл"
-				>
-					<Icon
-						name="heroicons:arrow-down-tray"
-						class="w-4 h-4 text-secondary-500 hover:text-secondary-700 dark:hover:text-secondary-300"
-					/>
-				</button>
-			</div>
 		</div>
 
 		<div
-			class="code-block relative overflow-x-auto"
+			class="relative code-block overflow-x-auto"
 			:class="{ 'max-h-64': scrollable }"
 		>
 			<pre
-				class="text-sm leading-relaxed"
+				class="text-sm leading-relaxed p-4 bg-gray-900 dark:bg-gray-800 rounded-lg text-gray-100 relative"
 			><code v-html="highlightedCode"></code></pre>
+
+			<!-- Copy Button -->
+			<button
+				@click="copyCode"
+				class="absolute top-2 right-2 p-2 rounded hover:bg-gray-700 dark:hover:bg-gray-600 transition-colors"
+				:title="copied ? 'Скопировано!' : 'Копировать код'"
+			>
+				<Icon
+					:name="copied ? 'heroicons:check' : 'heroicons:clipboard'"
+					class="w-4 h-4"
+					:class="copied ? 'text-green-400' : 'text-gray-400 hover:text-white'"
+				/>
+			</button>
 
 			<!-- Copy Success Toast -->
 			<div
 				v-if="copied"
-				class="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded text-xs"
+				class="absolute top-2 right-12 bg-green-500 text-white px-2 py-1 rounded text-xs"
 			>
 				Скопировано!
 			</div>
+		</div>
+
+		<!-- Download Button -->
+		<div v-if="downloadable" class="mt-2 text-right">
+			<button
+				@click="downloadCode"
+				class="text-sm text-secondary-500 hover:text-secondary-700 dark:hover:text-secondary-300 transition-colors"
+			>
+				<Icon name="heroicons:arrow-down-tray" class="w-4 h-4 mr-1" />
+				Скачать файл
+			</button>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
 import { saveAs } from "file-saver";
+import hljs from "highlight.js/lib/core";
+import css from "highlight.js/lib/languages/css";
+import javascript from "highlight.js/lib/languages/javascript";
+import json from "highlight.js/lib/languages/json";
+import typescript from "highlight.js/lib/languages/typescript";
+import "highlight.js/styles/tokyo-night-dark.css";
+import { computed, ref } from "vue";
+
+// Регистрируем языки
+hljs.registerLanguage("css", css);
+hljs.registerLanguage("javascript", javascript);
+hljs.registerLanguage("typescript", typescript);
+hljs.registerLanguage("json", json);
 
 interface Props {
 	code: string;
@@ -65,50 +77,32 @@ interface Props {
 	filename?: string;
 }
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+	copyable: true,
+	downloadable: false,
+	scrollable: true,
+	language: "css",
+});
 
 const copied = ref(false);
 
 const highlightedCode = computed(() => {
-	// Простая подсветка CSS синтаксиса
-	if (props.language === "css") {
-		return props.code
-			.replace(
-				/([a-zA-Z-]+)(?=\s*:)/g,
-				'<span class="text-blue-600 dark:text-blue-400">$1</span>'
-			)
-			.replace(
-				/:\s*([^;]+)/g,
-				': <span class="text-green-600 dark:text-green-400">$1</span>'
-			)
-			.replace(
-				/({|})/g,
-				'<span class="text-purple-600 dark:text-purple-400">$1</span>'
-			)
-			.replace(
-				/(\/\*[\s\S]*?\*\/)/g,
-				'<span class="text-gray-500 dark:text-gray-400">$1</span>'
-			);
-	}
+	if (!props.code) return "";
 
-	// Простая подсветка HTML
-	if (props.language === "html") {
-		return props.code
-			.replace(
-				/(&lt;[^&]*&gt;)/g,
-				'<span class="text-blue-600 dark:text-blue-400">$1</span>'
-			)
-			.replace(
-				/(&lt;\/?[a-zA-Z]+)/g,
-				'<span class="text-purple-600 dark:text-purple-400">$1</span>'
-			);
+	try {
+		// Используем highlight.js для подсветки
+		const result = hljs.highlight(props.code, { language: props.language });
+		return result.value;
+	} catch (error) {
+		console.warn("Highlighting failed:", error);
+		// Фallback - возвращаем код как есть
+		return props.code;
 	}
-
-	// Без подсветки
-	return props.code;
 });
 
 const copyCode = async () => {
+	if (!props.copyable) return;
+
 	try {
 		await navigator.clipboard.writeText(props.code);
 		copied.value = true;
@@ -132,8 +126,54 @@ const copyCode = async () => {
 };
 
 const downloadCode = () => {
+	if (!props.downloadable) return;
+
 	const filename = props.filename || `code.${props.language || "txt"}`;
 	const blob = new Blob([props.code], { type: "text/plain;charset=utf-8" });
 	saveAs(blob, filename);
 };
-</script> 
+</script>
+
+<style scoped>
+.code-block {
+	position: relative;
+}
+
+.code-block pre {
+	margin: 0;
+	background: #1a1b23;
+	border: 1px solid #2d3748;
+}
+
+.code-block code {
+	font-family: "Fira Code", "Consolas", "Monaco", monospace;
+	font-size: 0.875rem;
+	line-height: 1.5;
+}
+
+/* Переопределяем стили highlight.js */
+.code-block :deep(.hljs) {
+	background: #1a1b23 !important;
+	color: #a9b1d6 !important;
+}
+
+.code-block :deep(.hljs-property) {
+	color: #7dcfff !important;
+}
+
+.code-block :deep(.hljs-value) {
+	color: #9ece6a !important;
+}
+
+.code-block :deep(.hljs-number) {
+	color: #ff9e64 !important;
+}
+
+.code-block :deep(.hljs-string) {
+	color: #9ece6a !important;
+}
+
+.code-block :deep(.hljs-comment) {
+	color: #565f89 !important;
+}
+</style> 

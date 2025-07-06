@@ -1,11 +1,11 @@
 // Базовые типы для всех генераторов
 export interface BoxShadowConfig {
-	x: number;
-	y: number;
+	inset: boolean;
+	offsetX: number;
+	offsetY: number;
 	blur: number;
 	spread: number;
 	color: string;
-	inset: boolean;
 	opacity: number;
 }
 
@@ -122,3 +122,23 @@ export interface UndoRedoState {
 	currentIndex: number;
 	maxHistory: number;
 }
+
+// Box Shadow Generator Types
+export interface BoxShadowPreset {
+	name: string;
+	inset: boolean;
+	offsetX: number;
+	offsetY: number;
+	blur: number;
+	spread: number;
+	color: string;
+	opacity: number;
+}
+
+export interface BoxShadowExportOptions {
+	format: 'css' | 'scss' | 'less' | 'stylus';
+	includeVendorPrefixes: boolean;
+	minify: boolean;
+}
+
+// Box Shadow Components Types (удалены так как теперь используются основные типы BoxShadowConfig и BoxShadowPreset)

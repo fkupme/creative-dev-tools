@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+	pathPrefix: '/tools',
 	modules: [
 		'@nuxtjs/tailwindcss',
 		'@nuxtjs/color-mode',
@@ -29,6 +30,20 @@ export default defineNuxtConfig({
 		injectPosition: 0,
 		viewer: true,
 	},
+	components: [
+		{
+			path: '~/components',
+			pathPrefix: false,
+		},
+		{
+			path: '~/components/box-shadow',
+			prefix: 'BoxShadow',
+		},
+		{
+			path: '~/components/ui',
+			prefix: 'Ui',
+		},
+	],
 	fonts: {
 		families: [
 			{ name: 'Inter', provider: 'google' },
