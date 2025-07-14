@@ -17,6 +17,21 @@ export interface TextShadowConfig {
 	opacity: number;
 }
 
+export interface TextShadowPreset {
+	name: string;
+	x: number;
+	y: number;
+	blur: number;
+	color: string;
+	opacity: number;
+}
+
+export interface MultiTextShadowPreset {
+	name: string;
+	description: string;
+	layers: TextShadowConfig[];
+}
+
 export interface GradientConfig {
 	type: 'linear' | 'radial' | 'conic';
 	angle: number;

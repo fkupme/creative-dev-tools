@@ -6,7 +6,7 @@
 			Preview
 		</h2>
 
-		<!-- Background Controls -->
+		<!-- Preview Controls -->
 		<div class="flex items-center justify-between mb-4">
 			<div class="flex items-center space-x-4">
 				<div>
@@ -30,28 +30,46 @@
 			</div>
 		</div>
 
+		<!-- Editable Text Input -->
+		<div class="mb-4">
+			<UiInput
+				:model-value="previewText"
+				@update:model-value="$emit('update-preview-text', $event)"
+				label="Preview Text"
+				placeholder="Enter your text here..."
+			/>
+		</div>
+
 		<!-- Preview Container -->
 		<div
 			ref="previewContainer"
-			class="relative min-h-96 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 overflow-hidden"
+			class="relative min-h-64 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 overflow-hidden flex items-center justify-center p-8"
 			:class="{
 				'bg-preview-pattern': showBackground,
 			}"
 			:style="{ backgroundColor: !showBackground ? backgroundColor : '' }"
 		>
-			<!-- Preview Element -->
-			<div
-				class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-32 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 flex items-center justify-center transition-all duration-300"
-				:style="{ boxShadow: computedBoxShadow }"
+			<!-- Preview Text -->
+			<h1
+				class="text-center font-bold leading-tight transition-all duration-300 select-none"
+				:style="{
+					textShadow: computedTextShadow,
+					fontSize: fontSize + 'px',
+					fontFamily: fontFamily,
+					color: textColor,
+				}"
 			>
-				<div class="text-center">
-					<Icon
-						name="heroicons:check-circle"
-						class="w-8 h-8 mx-auto mb-2 text-gray-400"
-					/>
-					<p class="text-sm text-gray-500 dark:text-gray-400">Shadow Preview</p>
-				</div>
-			</div>
+				{{ previewText }}
+			</h1>
+		</div>
+
+		<!-- Text Color Control -->
+		<div class="mt-4">
+			<UiColorPicker
+				:model-value="textColor"
+				@update:model-value="$emit('update-text-color', $event)"
+				label="Text Color"
+			/>
 		</div>
 	</div>
 </template>
@@ -62,7 +80,11 @@ import { ref } from "vue";
 interface Props {
 	showBackground: boolean;
 	backgroundColor: string;
-	computedBoxShadow: string;
+	computedTextShadow: string;
+	fontSize: number;
+	fontFamily: string;
+	previewText: string;
+	textColor: string;
 }
 
 defineProps<Props>();
@@ -72,6 +94,8 @@ const previewContainer = ref<HTMLElement>();
 defineEmits<{
 	"toggle-background": [enabled: boolean];
 	"update-background-color": [color: string];
+	"update-preview-text": [text: string];
+	"update-text-color": [color: string];
 }>();
 
 defineExpose({

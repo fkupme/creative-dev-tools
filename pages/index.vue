@@ -200,8 +200,8 @@ const tools = [
 		icon: "heroicons:document-text",
 		color: "bg-green-500",
 		href: "/text-shadows",
-		status: "coming",
-		disabled: true,
+		status: "new",
+		disabled: false,
 	},
 	{
 		name: "Border Radius",

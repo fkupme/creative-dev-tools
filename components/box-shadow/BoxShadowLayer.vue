@@ -4,7 +4,12 @@
 			<span class="text-sm font-medium text-gray-700 dark:text-gray-300">
 				Layer {{ index + 1 }}
 			</span>
-			<UiButton @click="$emit('remove')" variant="ghost" size="sm">
+			<UiButton
+				v-if="canRemove"
+				@click="$emit('remove')"
+				variant="ghost"
+				size="sm"
+			>
 				<Icon name="heroicons:trash" class="w-4 h-4 text-red-500" />
 			</UiButton>
 		</div>
@@ -59,7 +64,7 @@
 			</div>
 
 			<!-- Color Picker and Inset Toggle -->
-			<div class="grid grid-cols-2 gap-2 text-xs">
+			<div class="grid grid-auto-rows gap-2 text-xs">
 				<div>
 					<UiColorPicker
 						:model-value="layer.color"
@@ -67,8 +72,9 @@
 						label="Color"
 					/>
 				</div>
-				<div class="flex items-end">
+				<div class="flex items-center justify-between">
 					<UiToggle
+						class="flex-1"
 						:model-value="layer.inset"
 						@update:model-value="updateLayer({ inset: $event })"
 						label="Inset"
@@ -97,6 +103,7 @@ import type { BoxShadowConfig } from "~/types";
 interface Props {
 	layer: BoxShadowConfig;
 	index: number;
+	canRemove?: boolean;
 }
 
 const props = defineProps<Props>();

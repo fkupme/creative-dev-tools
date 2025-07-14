@@ -63,8 +63,8 @@ export const useAppStore = defineStore('app', {
 				icon: 'heroicons:document-text',
 				color: 'bg-green-500',
 				href: '/text-shadows',
-				status: 'coming',
-				disabled: true,
+				status: 'new',
+				disabled: false,
 			},
 			{
 				id: 'border-radius',

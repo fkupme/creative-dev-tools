@@ -1,62 +1,75 @@
 <template>
-	<div class="space-y-4">
-		<div class="flex items-center justify-between">
-			<label v-if="label" class="label">{{ label }}</label>
-			<div class="flex items-center space-x-2">
-				<div
-					class="w-8 h-8 rounded-lg border-2 border-white dark:border-secondary-600 shadow-sm cursor-pointer"
-					:style="{ backgroundColor: modelValue }"
-					@click="showPicker = !showPicker"
-				/>
-				<input
-					v-model="colorInput"
-					type="text"
-					class="w-20 px-2 py-1 text-sm border border-secondary-200 dark:border-secondary-700 rounded bg-white dark:bg-secondary-800 focus:outline-none focus:ring-1 focus:ring-primary-500"
-					@input="updateColor"
-				/>
-			</div>
-		</div>
-
-		<!-- Color Picker -->
-		<div
-			v-if="showPicker"
-			class="p-4 bg-white dark:bg-secondary-800 border border-secondary-200 dark:border-secondary-700 rounded-lg shadow-lg"
-		>
-			<!-- HTML Color Input -->
-			<div class="mb-4">
-				<input
-					v-model="colorInput"
-					type="color"
-					class="w-full h-10 border border-secondary-200 dark:border-secondary-700 rounded cursor-pointer"
-					@input="updateColor"
-				/>
+	<div class="relative w-full">
+		<Menu as="div" class="relative text-left w-full">
+			<div>
+				<MenuButton
+					class="inline-flex w-full justify-between items-center rounded-md text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+				>
+					<label v-if="label" class="label mr-2">{{ label }}</label>
+					<div class="flex items-center space-x-2">
+						<div
+							class="w-8 h-8 rounded-lg border-2 border-white dark:border-secondary-600 shadow-sm cursor-pointer"
+							:style="{ backgroundColor: modelValue }"
+						/>
+						<input
+							v-model="colorInput"
+							type="text"
+							class="w-20 px-2 py-1 text-sm border border-secondary-200 dark:border-secondary-700 rounded bg-white dark:bg-secondary-800 focus:outline-none focus:ring-1 focus:ring-primary-500"
+							@input="updateColor"
+							@focus="showPicker = true"
+						/>
+					</div>
+				</MenuButton>
 			</div>
 
-			<!-- Preset Colors -->
-			<div class="grid grid-cols-8 gap-2 mb-4">
-				<button
-					v-for="color in presetColors"
-					:key="color"
-					class="w-8 h-8 rounded border-2 border-white dark:border-secondary-600 shadow-sm hover:scale-110 transition-transform"
-					:style="{ backgroundColor: color }"
-					@click="selectColor(color)"
-				/>
-			</div>
+			<transition
+				enter-active-class="transition duration-100 ease-out"
+				enter-from-class="transform scale-95 opacity-0"
+				enter-to-class="transform scale-100 opacity-100"
+				leave-active-class="transition duration-75 ease-in"
+				leave-from-class="transform scale-100 opacity-100"
+				leave-to-class="transform scale-95 opacity-0"
+			>
+				<MenuItems
+					class="absolute left-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-10 p-4 dark:bg-secondary-800 dark:ring-white/10 dark:divide-white/5"
+				>
+					<!-- HTML Color Input -->
+					<div class="mb-4">
+						<input
+							v-model="colorInput"
+							type="color"
+							class="w-full h-10 border border-secondary-200 dark:border-secondary-700 rounded cursor-pointer"
+							@input="updateColor"
+						/>
+					</div>
 
+					<!-- Preset Colors -->
+					<div class="grid grid-cols-5 grid-rows-5 gap-2 mb-4">
+						<button
+							v-for="color in presetColors"
+							:key="color"
+							class="w-8 h-8 rounded border-2 border-white dark:border-secondary-600 shadow-sm hover:scale-110 transition-transform"
+							:style="{ backgroundColor: color }"
+							@click="selectColor(color)"
+						/>
+					</div>
 
-		</div>
-
-		<!-- RGB/HSL Values -->
-		<div v-if="showValues" class="text-xs text-secondary-500 space-y-1">
-			<div>HEX: {{ colorInput }}</div>
-			<div>RGB: {{ rgbValue }}</div>
-			<div>HSL: {{ hslValue }}</div>
-		</div>
+					<!-- RGB/HSL Values -->
+					<div v-if="showValues" class="text-xs text-secondary-500 space-y-1">
+						<div>HEX: {{ colorInput }}</div>
+						<div>RGB: {{ rgbValue }}</div>
+						<div>HSL: {{ hslValue }}</div>
+					</div>
+				</MenuItems>
+			</transition>
+		</Menu>
 	</div>
 </template>
 
 <script setup lang="ts">
+import { Menu, MenuButton, MenuItems } from "@headlessui/vue";
 import chroma from "chroma-js";
+import { computed, ref, watch } from "vue";
 
 interface Props {
 	modelValue: string;
@@ -70,7 +83,7 @@ const emit = defineEmits<{
 	"update:modelValue": [value: string];
 }>();
 
-const showPicker = ref(false);
+const showPicker = ref(false); // Это будет контролировать состояние открытия/закрытия
 const colorInput = ref(props.modelValue);
 
 const presetColors = [
@@ -100,21 +113,10 @@ const presetColors = [
 	"#d6f5d6",
 ];
 
-const commonColors = [
-	{ name: "Красный", value: "#ef4444" },
-	{ name: "Оранжевый", value: "#f97316" },
-	{ name: "Желтый", value: "#eab308" },
-	{ name: "Зеленый", value: "#22c55e" },
-	{ name: "Синий", value: "#3b82f6" },
-	{ name: "Фиолетовый", value: "#a855f7" },
-	{ name: "Розовый", value: "#ec4899" },
-	{ name: "Серый", value: "#6b7280" },
-];
-
 const selectColor = (color: string) => {
 	colorInput.value = color;
 	updateColor();
-	showPicker.value = false;
+	// showPicker.value = false; // Headless UI сам управляет закрытием
 };
 
 const updateColor = () => {
@@ -154,8 +156,7 @@ watch(
 	}
 );
 
-// Закрытие picker при клике вне
-onClickOutside(showPicker, () => {
-	showPicker.value = false;
-});
+// onClickOutside(showPicker, () => {
+// 	showPicker.value = false;
+// });
 </script> 

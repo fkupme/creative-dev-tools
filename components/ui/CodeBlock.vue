@@ -90,8 +90,14 @@ const highlightedCode = computed(() => {
 	if (!props.code) return "";
 
 	try {
+		// Форматируем CSS код
+		let formattedCode = props.code;
+		if (props.language === "css") {
+			formattedCode = formatCSS(props.code);
+		}
+
 		// Используем highlight.js для подсветки
-		const result = hljs.highlight(props.code, { language: props.language });
+		const result = hljs.highlight(formattedCode, { language: props.language });
 		return result.value;
 	} catch (error) {
 		console.warn("Highlighting failed:", error);
@@ -99,6 +105,17 @@ const highlightedCode = computed(() => {
 		return props.code;
 	}
 });
+
+// Улучшенный форматтер CSS
+const formatCSS = (css: string): string => {
+	return css
+		.replace(/\s*{\s*/g, " {\n  ")
+		.replace(/;\s*(?!$)/g, ";\n  ") // не добавляем перенос после последней точки с запятой
+		.replace(/\s*}\s*/g, "\n}")
+		.replace(/,\s*(?=\S)/g, ",\n    ") // для множественных теней
+		.replace(/\s+/g, " ") // удаляем лишние пробелы
+		.trim();
+};
 
 const copyCode = async () => {
 	if (!props.copyable) return;
