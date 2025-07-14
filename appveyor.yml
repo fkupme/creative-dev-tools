@@ -24,6 +24,6 @@ artifacts:
 notifications:
   - provider: Email
     to:
-      - your-email@example.com
+      - fkupme@yandex.ru
     on_build_success: false
     on_build_failure: true

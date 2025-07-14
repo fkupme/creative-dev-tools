@@ -3,7 +3,7 @@
 > Комплексный набор инструментов для веб-разработчиков и дизайнеров
 
 [![Build Status](https://ci.appveyor.com/api/projects/status/github/fkupme/creative-dev-tools?branch=main&svg=true)](https://ci.appveyor.com/project/fkupme/creative-dev-tools)
-[![Vercel](https://vercel.com/fkupme/creative-dev-tools/badge.svg)](https://creative-dev-tools.vercel.app)
+[![Vercel](https://vercelbadge.vercel.app/api/fkupme/creative-dev-tools)](https://creative-dev-tools.vercel.app)
 [![Nuxt](https://img.shields.io/badge/Nuxt-3.17-00DC82?logo=nuxt.js)](https://nuxt.com)
 [![Vue](https://img.shields.io/badge/Vue-3.5-4FC08D?logo=vue.js)](https://vuejs.org)
 
