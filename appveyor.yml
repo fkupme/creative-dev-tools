@@ -1,0 +1,32 @@
+version: 1.0.{build}
+
+# Указываем что это Node.js проект
+build: off
+
+# Устанавливаем Node.js
+install:
+  - ps: Install-Product node $env:nodejs_version
+  - node --version
+  - npm --version
+
+# Скрипты для сборки
+before_build:
+  - npm ci
+
+# Тестирование
+test_script:
+  - npm run build
+  - npm run lint
+
+# Артефакты для деплоя
+artifacts:
+  - path: .nuxt/dist/**/*
+    name: dist
+
+# Уведомления
+notifications:
+  - provider: Email
+    to:
+      - your-email@example.com
+    on_build_success: false
+    on_build_failure: true
