@@ -3,10 +3,9 @@
 > Комплексный набор инструментов для веб-разработчиков и дизайнеров
 
 [![Build Status](https://ci.appveyor.com/api/projects/status/github/fkupme/creative-dev-tools?branch=main&svg=true)](https://ci.appveyor.com/project/fkupme/creative-dev-tools)
-[![GitHub Actions](https://github.com/fkupme/creative-dev-tools/workflows/CI/badge.svg)](https://github.com/fkupme/creative-dev-tools/actions)
 [![Vercel](https://vercel.com/fkupme/creative-dev-tools/badge.svg)](https://creative-dev-tools.vercel.app)
-[![Nuxt](https://img.shields.io/badge/Nuxt-3.0-00DC82?logo=nuxt.js)](https://nuxt.com)
-[![Vue](https://img.shields.io/badge/Vue-3.0-4FC08D?logo=vue.js)](https://vuejs.org)
+[![Nuxt](https://img.shields.io/badge/Nuxt-3.17-00DC82?logo=nuxt.js)](https://nuxt.com)
+[![Vue](https://img.shields.io/badge/Vue-3.5-4FC08D?logo=vue.js)](https://vuejs.org)
 
 Современное веб-приложение с набором интерактивных генераторов CSS, палитр цветов и других полезных инструментов для творческой разработки.
 

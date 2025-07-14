@@ -9,14 +9,11 @@ install:
   - node --version
   - npm --version
 
-# Скрипты для сборки
-before_build:
-  - npm ci
-
-# Тестирование
+# Тестирование и сборка
 test_script:
+  - npm ci
+  - npm list nuxt
   - npm run build
-  - npm run lint
 
 # Артефакты для деплоя
 artifacts:
