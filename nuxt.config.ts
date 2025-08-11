@@ -1,4 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import { defineNuxtConfig } from 'nuxt/config';
+
+/** @type {import('nuxt').NuxtConfig} */
 export default defineNuxtConfig({
 	pathPrefix: '/tools',
 	modules: [
@@ -13,6 +16,7 @@ export default defineNuxtConfig({
 	],
 	devtools: { enabled: true },
 	css: ['~/assets/css/main.css'],
+	plugins: ['~/plugins/vue-draggable.client.ts'],
 	colorMode: {
 		preference: 'dark',
 		fallback: 'light',
@@ -103,15 +107,8 @@ export default defineNuxtConfig({
 		},
 	},
 	runtimeConfig: {
-		public: {
-			appName: 'Creative Dev Tools',
-			appVersion: '1.0.0',
-		},
+		public: { appName: 'Creative Dev Tools', appVersion: '1.0.0' },
 	},
 	ssr: false,
-	nitro: {
-		prerender: {
-			routes: ['/'],
-		},
-	},
+	nitro: { prerender: { routes: ['/'] } },
 });

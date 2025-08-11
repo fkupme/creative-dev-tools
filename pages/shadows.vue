@@ -4,10 +4,10 @@
 		<BoxShadowHeader @export-css="exportCSS" @export-image="exportImage" />
 
 		<!-- Main Content -->
-		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+		<div class="container-fluid py-8">
 			<div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
 				<!-- Controls Panel -->
-				<div class="xl:col-span-1">
+				<div class="xl:col-span-1 xl:sticky xl:top-24 space-y-6">
 					<BoxShadowControls
 						:shadow-config="shadowConfig"
 						:shadow-layers="shadowLayers"

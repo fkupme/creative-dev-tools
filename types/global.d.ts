@@ -73,6 +73,8 @@ declare module 'colord' {
 	export function getFormat(color: string): string | null;
 }
 
+declare module 'sortablejs';
+
 // Глобальные типы для Vue 3
 declare global {
 	// Эти типы должны быть доступны автоматически в Vue 3

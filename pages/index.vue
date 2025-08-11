@@ -152,6 +152,7 @@
 </template>
 
 <script setup lang="ts">
+import { useHead } from "nuxt/app";
 useHead({
 	title: "Creative Dev Tools - Инструменты для веб-разработки",
 	meta: [
@@ -177,12 +178,12 @@ const tools = [
 	{
 		name: "Gradient Generator",
 		description:
-			"Генерируйте линейные и радиальные градиенты с полным контролем",
+			"Генерируйте линейные, радиальные и конические градиенты с полным контролем",
 		icon: "heroicons:swatch",
 		color: "bg-purple-500",
 		href: "/gradients",
-		status: "coming",
-		disabled: true,
+		status: "new",
+		disabled: false,
 	},
 	{
 		name: "Color Palette",
@@ -190,8 +191,8 @@ const tools = [
 		icon: "heroicons:paint-brush",
 		color: "bg-pink-500",
 		href: "/colors",
-		status: "coming",
-		disabled: true,
+		status: "new",
+		disabled: false,
 	},
 	{
 		name: "Text Shadow",
@@ -209,8 +210,8 @@ const tools = [
 		icon: "heroicons:square-3-stack-3d",
 		color: "bg-orange-500",
 		href: "/border-radius",
-		status: "coming",
-		disabled: true,
+		status: "new",
+		disabled: false,
 	},
 	{
 		name: "Animation Generator",
@@ -218,14 +219,14 @@ const tools = [
 		icon: "heroicons:bolt",
 		color: "bg-yellow-500",
 		href: "/animations",
-		status: "coming",
-		disabled: true,
+		status: "beta",
+		disabled: false,
 	},
 ];
 
 const stats = [
-	{ value: "10+", label: "Инструментов" },
-	{ value: "1000+", label: "Пользователей" },
+	{ value: "6", label: "Инструментов" },
+	{ value: "Проект", label: "Open Source" },
 	{ value: "50+", label: "Пресетов" },
 	{ value: "24/7", label: "Поддержка" },
 ];
