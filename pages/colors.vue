@@ -1,5 +1,10 @@
 <template>
 	<div class="min-h-screen bg-gray-50 dark:bg-gray-900">
+		<SeoMetaSeo
+			title="Color Palette"
+			description="Создание цветовых палитр и дизайн‑тем. Копирование CSS‑переменных и градиентов."
+			:ogType="'website'"
+		/>
 		<header
 			class="border-b border-secondary-200 dark:border-secondary-700 bg-white/80 dark:bg-secondary-900/80 backdrop-blur-md"
 		>
@@ -152,10 +157,7 @@
 
 <script setup lang="ts">
 import chroma from "chroma-js";
-import { useHead } from "nuxt/app";
 import { computed, ref } from "vue";
-
-useHead({ title: "Color Palette" });
 
 const baseColor = ref("#0ea5e9");
 const harmony = ref<

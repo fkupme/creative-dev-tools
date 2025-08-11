@@ -6,66 +6,41 @@
 		<header
 			class="sticky top-0 z-50 bg-white/80 dark:bg-secondary-900/80 backdrop-blur-md border-b border-secondary-200 dark:border-secondary-700"
 		>
-			<div class="container-fluid">
+			<div class="px-10">
 				<div class="flex items-center justify-between h-16">
 					<!-- Logo -->
 					<NuxtLink to="/" class="flex items-center space-x-2 group">
-						<div
-							class="w-8 h-8 bg-gradient-to-r from-primary-500 to-accent-500 rounded-lg flex items-center justify-center"
-						>
-							<Icon name="heroicons:squares-2x2" class="w-5 h-5 text-white" />
-						</div>
+						<img src="/favicon.svg" alt="Creative Dev Tools" class="h-8 w-8" />
 						<span
 							class="text-xl font-bold gradient-text group-hover:scale-105 transition-transform"
+							>Creative Dev Tools</span
 						>
-							Creative Dev Tools
-						</span>
 					</NuxtLink>
 
-					<!-- Navigation -->
-					<nav class="hidden md:flex items-center space-x-1">
-						<NuxtLink
-							v-for="item in navigation"
-							:key="item.name"
-							:to="item.href"
-							class="px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-secondary-100 dark:hover:bg-secondary-800"
-							:class="[
-								$route.path === item.href
-									? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20'
-									: 'text-secondary-600 dark:text-secondary-400 hover:text-secondary-900 dark:hover:text-secondary-100',
-							]"
-						>
-							{{ item.name }}
-						</NuxtLink>
-					</nav>
+					<!-- Navigation moved to Drawer -->
 
 					<!-- Actions -->
 					<div class="flex items-center space-x-2">
 						<!-- Theme Toggle -->
 						<button
-							@click="toggleColorMode"
+							@click="toggleDark"
 							class="p-2 rounded-lg hover:bg-secondary-100 dark:hover:bg-secondary-800 transition-colors"
-							:title="
-								$colorMode.value === 'dark' ? 'Светлая тема' : 'Темная тема'
-							"
+							:title="isDark ? 'Светлая тема' : 'Темная тема'"
 						>
 							<Icon
-								:name="
-									$colorMode.value === 'dark'
-										? 'heroicons:sun'
-										: 'heroicons:moon'
-								"
+								:name="isDark ? 'heroicons:sun' : 'heroicons:moon'"
 								class="w-5 h-5 text-secondary-600 dark:text-secondary-400"
 							/>
 						</button>
 
-						<!-- Mobile Menu Button -->
+						<!-- Drawer Toggle Button -->
 						<button
-							@click="mobileMenuOpen = !mobileMenuOpen"
-							class="md:hidden p-2 rounded-lg hover:bg-secondary-100 dark:hover:bg-secondary-800 transition-colors"
+							@click="drawerOpen = true"
+							class="p-2 rounded-lg hover:bg-secondary-100 dark:hover:bg-secondary-800 transition-colors"
+							:title="'Меню'"
 						>
 							<Icon
-								:name="mobileMenuOpen ? 'heroicons:x-mark' : 'heroicons:bars-3'"
+								name="heroicons:bars-3"
 								class="w-5 h-5 text-secondary-600 dark:text-secondary-400"
 							/>
 						</button>
@@ -73,28 +48,99 @@
 				</div>
 			</div>
 
-			<!-- Mobile Menu -->
-			<div
-				v-if="mobileMenuOpen"
-				class="md:hidden border-t border-secondary-200 dark:border-secondary-700 bg-white dark:bg-secondary-900"
-			>
-				<div class="container-fluid py-4 space-y-2">
-					<NuxtLink
-						v-for="item in navigation"
-						:key="item.name"
-						:to="item.href"
-						class="block px-3 py-2 rounded-lg text-base font-medium transition-colors"
-						:class="[
-							$route.path === item.href
-								? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20'
-								: 'text-secondary-600 dark:text-secondary-400 hover:text-secondary-900 dark:hover:text-secondary-100 hover:bg-secondary-100 dark:hover:bg-secondary-800',
-						]"
-						@click="mobileMenuOpen = false"
+			<!-- Drawer Menu -->
+			<TransitionRoot as="template" :show="drawerOpen">
+				<Dialog as="div" class="relative z-[60]" @close="drawerOpen = false">
+					<TransitionChild
+						as="template"
+						enter="ease-out duration-200"
+						enter-from="opacity-0"
+						enter-to="opacity-100"
+						leave="ease-in duration-150"
+						leave-from="opacity-100"
+						leave-to="opacity-0"
 					>
-						{{ item.name }}
-					</NuxtLink>
-				</div>
-			</div>
+						<div class="fixed inset-0 bg-black/30" />
+					</TransitionChild>
+
+					<div class="fixed inset-0 overflow-hidden">
+						<div class="absolute inset-0 overflow-hidden">
+							<div class="fixed inset-y-0 left-0 max-w-full flex">
+								<TransitionChild
+									as="template"
+									enter="transform transition ease-out duration-200"
+									enter-from="-translate-x-full"
+									enter-to="translate-x-0"
+									leave="transform transition ease-in duration-150"
+									leave-from="translate-x-0"
+									leave-to="-translate-x-full"
+								>
+									<DialogPanel class="w-screen max-w-sm">
+										<div
+											class="h-full flex flex-col bg-white dark:bg-secondary-900 border-r border-secondary-200 dark:border-secondary-700"
+										>
+											<div
+												class="px-4 py-4 flex items-center justify-between border-b border-secondary-200 dark:border-secondary-700"
+											>
+												<div class="flex items-center space-x-2">
+													<img
+														src="/favicon.svg"
+														alt="Creative Dev Tools"
+														class="h-8 w-8"
+													/>
+													<span class="text-base font-semibold gradient-text"
+														>Creative Dev Tools</span
+													>
+												</div>
+												<button
+													@click="drawerOpen = false"
+													class="p-2 rounded-lg hover:bg-secondary-100 dark:hover:bg-secondary-800"
+												>
+													<Icon
+														name="heroicons:x-mark"
+														class="w-5 h-5 text-secondary-600 dark:text-secondary-400"
+													/>
+												</button>
+											</div>
+											<nav class="p-3 space-y-1">
+												<NuxtLink
+													v-for="item in navigation"
+													:key="item.name"
+													:to="item.disabled ? '#' : item.href"
+													class="flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-secondary-100 dark:hover:bg-secondary-800"
+													:class="[
+														$route.path === item.href && !item.disabled
+															? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20'
+															: 'text-secondary-700 dark:text-secondary-300',
+														item.disabled
+															? 'opacity-50 cursor-not-allowed'
+															: '',
+													]"
+													:aria-disabled="item.disabled ? 'true' : 'false'"
+													@click.prevent="item.disabled && (drawerOpen = false)"
+													@click="!item.disabled && (drawerOpen = false)"
+												>
+													<span>{{ item.name }}</span>
+													<span
+														v-if="item.status === 'beta'"
+														class="ml-2 text-[10px] px-1 py-0.5 rounded bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300"
+														>Бета</span
+													>
+													<span
+														v-else-if="item.disabled"
+														class="ml-2 text-[10px] px-1 py-0.5 rounded bg-secondary-100 text-secondary-700 dark:bg-secondary-800 dark:text-secondary-300"
+														>WIP</span
+													>
+												</NuxtLink>
+											</nav>
+										</div>
+									</DialogPanel>
+								</TransitionChild>
+							</div>
+						</div>
+					</div>
+				</Dialog>
+			</TransitionRoot>
 		</header>
 
 		<!-- Main Content -->
@@ -106,7 +152,7 @@
 		<footer
 			class="bg-secondary-50 dark:bg-secondary-900 border-t border-secondary-200 dark:border-secondary-700"
 		>
-			<div class="container-fluid py-8">
+			<div class="px-10 py-8">
 				<div class="flex flex-col md:flex-row items-center justify-between">
 					<div class="flex items-center space-x-2 mb-4 md:mb-0">
 						<div
@@ -122,10 +168,8 @@
 					<div
 						class="flex items-center space-x-4 text-sm text-secondary-500 dark:text-secondary-500"
 					>
-						<span>© 2024 Creative Dev Tools</span>
-						<span>•</span>
 						<a
-							href="https://github.com"
+							href="https://github.com/fkupme/creative-dev-tools"
 							target="_blank"
 							rel="noopener noreferrer"
 							class="hover:text-primary-500 transition-colors"
@@ -140,27 +184,69 @@
 </template>
 
 <script setup lang="ts">
-const mobileMenuOpen = ref(false);
+import {
+	Dialog,
+	DialogPanel,
+	TransitionChild,
+	TransitionRoot,
+} from "@headlessui/vue";
+import { onMounted, ref, watch } from "vue";
+import { useRoute } from "vue-router";
 
-const navigation = [
+const drawerOpen = ref(false);
+
+const navigation: Array<{
+	name: string;
+	href: string;
+	disabled?: boolean;
+	status?: "beta" | "new" | "wip";
+}> = [
 	{ name: "Главная", href: "/" },
 	{ name: "Тени", href: "/shadows" },
+	{ name: "Текстовые тени", href: "/text-shadows" },
 	{ name: "Градиенты", href: "/gradients" },
 	{ name: "Цвета", href: "/colors" },
-	{ name: "Анимации", href: "/animations" },
+	{ name: "Радиус", href: "/border-radius" },
+	{ name: "Анимации", href: "/animations", status: "beta" },
+	// Planned
+	{ name: "Фильтры", href: "#", disabled: true },
+	{ name: "Glassmorphism", href: "#", disabled: true },
+	{ name: "Clip-Path", href: "#", disabled: true },
 ];
 
-const colorMode = useColorMode();
+const isDark = ref(false);
 
-const toggleColorMode = () => {
-	colorMode.preference = colorMode.value === "dark" ? "light" : "dark";
+onMounted(() => {
+	try {
+		const stored = localStorage.getItem("nuxt-color-mode");
+		isDark.value = stored
+			? stored === "dark"
+			: document.documentElement.classList.contains("dark");
+	} catch {}
+});
+
+const toggleDark = () => {
+	isDark.value = !isDark.value;
+	const html = document.documentElement;
+	if (isDark.value) {
+		html.classList.add("dark");
+		try {
+			localStorage.setItem("nuxt-color-mode", "dark");
+		} catch {}
+	} else {
+		html.classList.remove("dark");
+		try {
+			localStorage.setItem("nuxt-color-mode", "light");
+		} catch {}
+	}
 };
 
-// Закрытие мобильного меню при изменении маршрута
+// Закрытие меню при изменении маршрута
+const route = useRoute();
 watch(
-	() => useRoute().path,
+	() => route.path,
 	() => {
-		mobileMenuOpen.value = false;
+		drawerOpen.value = false;
 	}
 );
 </script> 

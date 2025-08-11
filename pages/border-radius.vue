@@ -1,5 +1,10 @@
 <template>
 	<div class="min-h-screen bg-gray-50 dark:bg-gray-900">
+		<SeoMetaSeo
+			title="Border Radius Generator"
+			description="Точные радиусы углов в px/%/rem, быстрые пресеты и готовый CSS."
+			:ogType="'website'"
+		/>
 		<header
 			class="border-b border-secondary-200 dark:border-secondary-700 bg-white/80 dark:bg-secondary-900/80 backdrop-blur-md"
 		>
@@ -102,10 +107,7 @@
 </template>
 
 <script setup lang="ts">
-import { useHead } from "nuxt/app";
 import { useBorderRadiusGenerator } from "~/composables/useBorderRadiusGenerator";
-
-useHead({ title: "Border Radius Generator" });
 
 const { config, borderRadiusValue, cssCode, copyToClipboard } =
 	useBorderRadiusGenerator();

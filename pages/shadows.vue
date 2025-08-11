@@ -1,5 +1,10 @@
 <template>
 	<div class="min-h-screen bg-gray-50 dark:bg-gray-900">
+		<SeoMetaSeo
+			title="Box Shadow Generator"
+			description="Интерактивный генератор боксовых теней: одиночные и множественные слои, пресеты и код CSS."
+			:ogType="'website'"
+		/>
 		<!-- Header -->
 		<BoxShadowHeader @export-css="exportCSS" @export-image="exportImage" />
 
@@ -45,11 +50,10 @@
 </template>
 
 <script setup lang="ts">
-import { saveAs } from "file-saver";
-import html2canvas from "html2canvas";
-import { useHead } from "nuxt/app";
-import { onMounted, ref } from "vue";
-import { useShadowGenerator } from "~/composables/useShadowGenerator";
+import { saveAs } from "file-saver"
+import html2canvas from "html2canvas"
+import { onMounted, ref } from "vue"
+import { useShadowGenerator } from "~/composables/useShadowGenerator"
 
 // Composable
 const {
@@ -68,17 +72,6 @@ const {
 	toggleMultipleShadows,
 } = useShadowGenerator();
 
-// Meta
-useHead({
-	title: "Box Shadow Generator",
-	meta: [
-		{
-			name: "description",
-			content:
-				"Create beautiful CSS box shadows with our interactive generator. Perfect for web designers and developers.",
-		},
-	],
-});
 
 // Refs
 const previewRef = ref();

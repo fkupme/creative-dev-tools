@@ -3,7 +3,6 @@ import { defineNuxtConfig } from 'nuxt/config';
 
 /** @type {import('nuxt').NuxtConfig} */
 export default defineNuxtConfig({
-	pathPrefix: '/tools',
 	modules: [
 		'@nuxtjs/tailwindcss',
 		'@nuxtjs/color-mode',
@@ -17,23 +16,6 @@ export default defineNuxtConfig({
 	devtools: { enabled: true },
 	css: ['~/assets/css/main.css'],
 	plugins: ['~/plugins/vue-draggable.client.ts'],
-	colorMode: {
-		preference: 'dark',
-		fallback: 'light',
-		hid: 'nuxt-color-mode-script',
-		globalName: '__NUXT_COLOR_MODE__',
-		componentName: 'ColorScheme',
-		classPrefix: '',
-		classSuffix: '',
-		storageKey: 'nuxt-color-mode',
-	},
-	tailwindcss: {
-		cssPath: '~/assets/css/main.css',
-		configPath: 'tailwind.config.js',
-		exposeConfig: false,
-		injectPosition: 0,
-		viewer: true,
-	},
 	components: [
 		{
 			path: '~/components',
@@ -51,38 +33,14 @@ export default defineNuxtConfig({
 			path: '~/components/ui',
 			prefix: 'Ui',
 		},
+		{
+			path: '~/components/seo',
+			prefix: 'Seo',
+		},
 	],
-	fonts: {
-		families: [
-			{ name: 'Inter', provider: 'google' },
-			{ name: 'JetBrains Mono', provider: 'google' },
-			{ name: 'Roboto', provider: 'google' },
-			{ name: 'Open Sans', provider: 'google' },
-			{ name: 'Lato', provider: 'google' },
-			{ name: 'Montserrat', provider: 'google' },
-			{ name: 'Poppins', provider: 'google' },
-			{ name: 'Source Sans Pro', provider: 'google' },
-			{ name: 'Oswald', provider: 'google' },
-			{ name: 'Raleway', provider: 'google' },
-			{ name: 'Ubuntu', provider: 'google' },
-			{ name: 'Nunito', provider: 'google' },
-			{ name: 'Playfair Display', provider: 'google' },
-			{ name: 'Merriweather', provider: 'google' },
-			{ name: 'Fira Sans', provider: 'google' },
-			{ name: 'Work Sans', provider: 'google' },
-			{ name: 'PT Sans', provider: 'google' },
-			{ name: 'Libre Franklin', provider: 'google' },
-			{ name: 'Crimson Text', provider: 'google' },
-			{ name: 'Dancing Script', provider: 'google' },
-			{ name: 'Bebas Neue', provider: 'google' },
-			{ name: 'Abril Fatface', provider: 'google' },
-			{ name: 'Pacifico', provider: 'google' },
-			{ name: 'Lobster', provider: 'google' },
-			{ name: 'Righteous', provider: 'google' },
-		],
-	},
 	app: {
 		head: {
+			base: { href: '/' },
 			title: 'Creative Dev Tools',
 			meta: [
 				{
@@ -103,12 +61,40 @@ export default defineNuxtConfig({
 				{ property: 'og:type', content: 'website' },
 				{ name: 'twitter:card', content: 'summary_large_image' },
 			],
-			link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+			link: [
+				{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+				{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+				{ rel: 'shortcut icon', href: '/favicon.ico' },
+				{ rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
+				{ rel: 'manifest', href: '/site.webmanifest' },
+				{ rel: 'mask-icon', href: '/favicon.svg', color: '#00DC82' },
+			],
 		},
 	},
 	runtimeConfig: {
-		public: { appName: 'Creative Dev Tools', appVersion: '1.0.0' },
+		public: {
+			appName: 'Creative Dev Tools',
+			appVersion: '1.0.0',
+			siteUrl: 'https://creative-dev-tools.vercel.app',
+		},
 	},
+	// Site config moved to site.config.ts for better type support
+	// Module-specific options live in module defaults; keep config minimal
+	// nuxt-og-image will use defaults; override via route rules if needed
 	ssr: false,
-	nitro: { prerender: { routes: ['/'] } },
+	nitro: {
+		preset: 'vercel',
+		compatibilityDate: '2025-08-11',
+		prerender: {
+			routes: [
+				'/',
+				'/colors',
+				'/gradients',
+				'/shadows',
+				'/text-shadows',
+				'/border-radius',
+				'/animations',
+			],
+		},
+	},
 });

@@ -85,3 +85,17 @@ declare global {
 }
 
 export {};
+
+declare module '#app' {
+	export function useColorMode(): {
+		value: 'light' | 'dark' | 'system';
+		preference: 'light' | 'dark' | 'system';
+	};
+}
+
+declare module '#imports' {
+	export function useColorMode(): {
+		value: 'light' | 'dark' | 'system';
+		preference: 'light' | 'dark' | 'system';
+	};
+}

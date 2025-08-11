@@ -1,5 +1,10 @@
 <template>
 	<div class="min-h-screen bg-gray-50 dark:bg-gray-900">
+		<SeoMetaSeo
+			title="Text Shadow Generator"
+			description="Генератор теней для текста: соло/мульти‑слои, пресеты, предпросмотр и готовый CSS."
+			:ogType="'website'"
+		/>
 		<!-- Header -->
 		<TextShadowHeader @export-css="exportCSS" @export-image="exportImage" />
 
@@ -59,7 +64,6 @@
 <script setup lang="ts">
 import { saveAs } from "file-saver";
 import html2canvas from "html2canvas";
-import { useHead } from "nuxt/app";
 import { onMounted, ref } from "vue";
 import { useTextShadowGenerator } from "~/composables/useTextShadowGenerator";
 
@@ -82,17 +86,7 @@ const {
 	toggleMultipleShadows,
 } = useTextShadowGenerator();
 
-// Meta
-useHead({
-	title: "Text Shadow Generator",
-	meta: [
-		{
-			name: "description",
-			content:
-				"Create beautiful CSS text shadows with our interactive generator. Perfect for web designers and developers.",
-		},
-	],
-});
+// Meta handled by <MetaSeo />
 
 // Refs
 const previewRef = ref();

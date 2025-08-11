@@ -1,5 +1,10 @@
 <template>
 	<div class="min-h-screen bg-gray-50 dark:bg-gray-900">
+		<SeoMetaSeo
+			title="Animation Generator"
+			description="Конструктор @keyframes, пресеты, предпросмотр и готовый CSS."
+			:ogType="'website'"
+		/>
 		<header
 			class="border-b border-secondary-200 dark:border-secondary-700 bg-white/80 dark:bg-secondary-900/80 backdrop-blur-md"
 		>
@@ -191,10 +196,7 @@
 </template>
 
 <script setup lang="ts">
-import { useHead } from "nuxt/app";
 import { computed, onMounted, ref } from "vue";
-
-useHead({ title: "Animation Generator" });
 
 // Options
 const presetOptions = [

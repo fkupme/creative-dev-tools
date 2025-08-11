@@ -7,6 +7,10 @@
 </template>
 
 <script setup lang="ts">
+import { useHead } from "nuxt/app";
+import { onErrorCaptured, onMounted } from "vue";
+import { useAppStore } from "~/stores/app";
+
 // SEO и мета-теги
 useHead({
 	titleTemplate: "%s - Creative Dev Tools",
@@ -26,7 +30,10 @@ useHead({
 	],
 	link: [
 		{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
+		{ rel: "shortcut icon", href: "/favicon.ico" },
+		{ rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
 		{ rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
+		{ rel: "manifest", href: "/site.webmanifest" },
 	],
 });
 
@@ -39,7 +46,7 @@ onMounted(() => {
 	console.log("🚀 Creative Dev Tools initialized");
 
 	// Загрузка пользовательских настроек
-	if (typeof window !== 'undefined') {
+	if (typeof window !== "undefined") {
 		const savedFavorites = localStorage.getItem("creative-dev-tools-favorites");
 		if (savedFavorites) {
 			try {

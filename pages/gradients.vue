@@ -1,5 +1,10 @@
 <template>
 	<div class="min-h-screen bg-gray-50 dark:bg-gray-900">
+		<SeoMetaSeo
+			title="Gradient Generator"
+			description="Линейные, радиальные и конические градиенты. Готовый CSS и экспорт PNG."
+			:ogType="'website'"
+		/>
 		<!-- Header -->
 		<header
 			class="border-b border-secondary-200 dark:border-secondary-700 bg-white/80 dark:bg-secondary-900/80 backdrop-blur-md"
@@ -181,7 +186,6 @@
 <script setup lang="ts">
 import { saveAs } from "file-saver";
 import html2canvas from "html2canvas";
-import { useHead } from "nuxt/app";
 import {
 	computed,
 	nextTick,
@@ -193,8 +197,6 @@ import {
 // @ts-ignore - типы подключены через декларацию модуля
 import Sortable from "sortablejs";
 import { useGradientGenerator } from "~/composables/useGradientGenerator";
-
-useHead({ title: "Gradient Generator" });
 
 const {
 	config,
